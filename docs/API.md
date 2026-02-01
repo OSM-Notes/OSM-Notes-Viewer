@@ -413,7 +413,7 @@ Future REST API endpoints for **recent data** (updated every 15 minutes) will re
 `/api/v1/users/me/*`)
 
 This approach is aligned with the
-[OSM-Notes-API proposal](../../OSM-Notes-API/docs/API_Proposal.md).
+[OSM-Notes-API proposal](https://github.com/OSM-Notes/OSM-Notes-API/blob/main/docs/API_Proposal.md).
 
 **Client-Side Protection**: The viewer implements client-side rate limiting, aggressive caching, and
 abuse detection to prevent overloading the server. See
