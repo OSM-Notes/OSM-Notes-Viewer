@@ -100,6 +100,11 @@ export default defineConfig({
     },
   },
 
+  // Do not auto-open a browser (avoids spawn xdg-open ENOENT on headless / minimal Linux)
+  preview: {
+    open: false,
+  },
+
   // CSS configuration
   css: {
     devSourcemap: true,
