@@ -523,6 +523,59 @@ The application is deployed via GitHub Pages using GitHub Actions. Configuration
 - Data is served from a separate repository:
   [OSM-Notes-Data](https://github.com/OSM-Notes/OSM-Notes-Data)
 
+#### Self-hosting: static build + Nginx (production)
+
+Do not use `vite preview` in production. Build once and serve the **`dist/`** output with a real HTTP server (Nginx, Caddy, or similar). The long-running system service is the **web server** serving static files, not a Node process.
+
+1. **Configure the API** before building (values are baked into the client bundle):
+
+   - Edit `config/api-config.js` and set `API_BASE_URL` to your backend.
+   - Re-run `npm run build` after any change to that file.
+
+2. **Build and install files** on the server (example paths: adjust to your layout):
+
+   ```bash
+   cd /var/www/osm-notes-viewer   # or your clone path
+   git pull
+   npm ci
+   npm run build
+   # Optional: copy dist/ to a dedicated web root owned by the web user
+   sudo rsync -a --delete dist/ /var/www/html/osm-notes/
+   ```
+
+3. **Nginx** — minimal `server` block (Debian-style site under `/etc/nginx/sites-available/`):
+
+   ```nginx
+   server {
+       listen 80;
+       server_name your.host.example;   # or _ for any hostname
+
+       root /var/www/html/osm-notes;
+       index index.html;
+       add_header X-Content-Type-Options nosniff;
+
+       location / {
+           try_files $uri $uri/ =404;
+       }
+   }
+   ```
+
+   Enable the site, test configuration, and reload Nginx:
+
+   ```bash
+   sudo nginx -t && sudo systemctl reload nginx
+   ```
+
+4. **Service** — enable Nginx to start on boot (package installs a `nginx.service` unit):
+
+   ```bash
+   sudo systemctl enable --now nginx
+   ```
+
+5. **Firewall** — if applicable, allow HTTP/HTTPS to that host (e.g. `80`/`443`).
+
+For updates, repeat `git pull` → `npm ci` → `npm run build` (and `rsync` or equivalent), then `systemctl reload nginx` if the site path changed. See also [docs/Build.md](docs/Build.md) for the build output layout.
+
 ## Configuration
 
 Update the API endpoint in `config/api-config.js`:
