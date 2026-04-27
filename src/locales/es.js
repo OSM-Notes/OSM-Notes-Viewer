@@ -282,7 +282,7 @@ export default {
   'about.whatIsThis.description1':
     'OSM Notes Viewer es una aplicación web interactiva que visualiza análisis y estadísticas sobre la actividad de notas de OpenStreetMap en todo el mundo.',
   'about.whatIsThis.description2':
-    'Proporciona información sobre las contribuciones de los usuarios, estadísticas a nivel de país, tendencias de hashtags y patrones temporales de creación y resolución de notas.',
+    'Muestra contribuciones por usuario, estadísticas por país, tendencias de hashtags y patrones en el tiempo: cuándo se crean y cuándo se resuelven las notas.',
   'about.manifesto.title': 'Manifiesto: Nuestra Perspectiva sobre las Notas de OSM',
   'about.manifesto.importance.title': 'La Importancia de las Notas en OpenStreetMap',
   'about.manifesto.importance.p1':
@@ -290,7 +290,7 @@ export default {
   'about.manifesto.importance.p2':
     'Las notas representan el esfuerzo colectivo de miles de contribuyentes trabajando juntos para mejorar la precisión y completitud del mapa. Cada nota cuenta una historia: una carretera faltante, un nombre incorrecto, un nuevo negocio o un error de mapeo que necesita corrección.',
   'about.manifesto.importance.p3':
-    'Las notas ayudan a mantener el mapa vivo y actualizado. Son la forma en que usuarios que no saben mapear pueden hacer reportes de lo que ven en la calle que difiere del mapa. De esta forma, los mapeadores toman esos reportes para retroalimentar el mapa y mejorarlo de acuerdo con lo que describen los usuarios. Esto crea un ciclo continuo de retroalimentación que asegura que el mapa refleje el mundo real con la mayor precisión posible.',
+    'Las notas mantienen el mapa al día. Quien no edita en OSM puede igualmente señalar diferencias entre la calle y el mapa; los mapeadores usan esas señales para corregir y completar datos. Ese intercambio continuo hace que el mapa se parezca un poco más al mundo real cada vez.',
   'about.manifesto.mission.title': 'Nuestra Misión',
   'about.manifesto.mission.p':
     'Nuestra misión es hacer que las Notas de OSM sean más accesibles, comprensibles y accionables. Creemos que al proporcionar mejores herramientas e información, podemos:',
@@ -313,37 +313,37 @@ export default {
   'about.community.item4': 'Características geográficas y puntos de referencia naturales',
   'about.community.item5': 'Mejoras en la calidad de los datos',
   'about.community.p2':
-    'Este proyecto es parte de ese esfuerzo, proporcionando herramientas e información para apoyar el trabajo de la comunidad.',
+    'Este visor es parte de ese esfuerzo: ofrece herramientas e información para acompañar el trabajo de quienes mapean y resuelven notas en la región.',
   'about.history.title': 'Historia del Proyecto',
   'about.history.p1':
-    'Este proyecto comenzó en 2020, durante la pandemia, que yo, Andrés Gómez, comencé a revisar las notas, donde no tenía información de cómo resolverlas, pero había muchas en Colombia.',
+    'En 2020, durante la pandemia, Andrés Gómez empezó a revisar notas en Colombia: había muchas pendientes y poca guía clara sobre cómo resolverlas.',
   'about.history.p2':
-    'En 2021, comencé a invitar a otros a participar en la resolución de notas. Primero para Bogotá, después gracias a rustiruz, pasamos a resolver Colombia y fue así como llegamos a invitar a resolver notas a nivel latam.',
+    'En 2021 comenzó a convocar a otras personas. Primero en Bogotá; con el impulso de risturiz el alcance creció a toda Colombia y, más tarde, a convocatorias para resolver notas a escala de Latinoamérica.',
   'about.history.p3':
-    'Rustiruz acuñó el término notathon, como actividad en donde nos reunimos para resolver notas. Desde entonces, se han hecho notathones en varios países de latinoamérica, y se han convocado las personas que resuelven notas en un mismo <a href="https://t.me/osm_notes_latam" target="_blank" rel="noopener noreferrer">canal de Telegram</a>, donde nos apoyamos mutuamente.',
+    'risturiz acuñó el término «notathon»: un encuentro para resolver notas en conjunto. Desde entonces se han hecho notatones en varios países y quienes resuelven notas se coordinan en un <a href="https://t.me/osm_notes_latam" target="_blank" rel="noopener noreferrer">canal de Telegram</a> de apoyo mutuo.',
   'about.history.p4':
-    'Esto de los notathones ha permitido que la comunidad latam se reconsolide, y ha llegado al punto de volver a hacer los State of the Map Latam.',
+    'Esa actividad ayudó a reforzar la comunidad en la región e incluso a retomar los eventos State of the Map Latam.',
   'about.history.p5':
-    'Volviendo a las notas, la falta de herramientas para resolución de notas, ha hecho que solicitemos que muchas aplicaciones hagan cambios para notas, desde incluir el nombre y versión de la app, hasta incluir funcionalidad propia (fediphoto, damn). Sin embargo, en el tema de resolución, las herramientas son limitadas, muestran la ubicación de las notas (notesViewer), la cantidad de notas abiertas o cerradas (HDYC), pero no más. Los análisis son escasos como la app heatmap de notas.',
+    'En paralelo, la escasez de herramientas llevó a pedir a muchas aplicaciones que mejoraran el flujo con notas (por ejemplo, identificar app y versión, o añadir funciones específicas, como en fediphoto o el proyecto DAMN). Aun así, lo disponible para quien resuelve seguía siendo pobre: mostrar dónde está una nota (p. ej. notesViewer) o conteos abiertos/cerrados (p. ej. HDYC), pero poco análisis agregado; casos aislados como una app de mapas de calor, sin un panorama amplio.',
   'about.history.p6':
-    'Por otro lado, las notas fueron agregadas después de implementar el API 0.6 de OSM, y su funcionalidad es muy limitada. Consultar las notas de un usuario es tedioso, y las de un país es solo posible con resultMaps de Pascal Neis, pero su análisis es limitado.',
+    'Las notas se integraron con la API 0.6 de OSM y ofrecen pocas operaciones. Listar las notas de un usuario resulta farragoso; el panorama por país, sobre todo con análisis, depende de sitios como resultMaps de Pascal Neis, con limitaciones propias.',
   'about.history.p7':
-    'Además, quise reconocer a los grandes notes resolvers de latam, y fue así como comencé a usar el dump del planet. Poco a poco fui madurando la idea de tener un perfil de contribución de notas en forma similar a HDYC, y ahí fue cuando comencé a investigar sobre las consultas de API para datos actualizados.',
+    'Surgió además el deseo de visibilizar a quienes más resuelven notas en Latam, y con eso empezó el uso del volcado del planet. La idea de un «perfil» de notas, en la línea de lo que aporta HDYC a los cambios, fue madurando hasta plantearse consultas a la API y datos al día.',
   'about.history.p8':
-    'Ese fue el momento Eureka, y me imaginé un mecanismo para bajar el histórico y después mantenerlo actualizado. Tenía la primera parte en bash, que bajaba el histórico. Fue mi amigo Jose Luis Cerón que me dio unas técnicas de arquitectura, y me aconsejó seguir en bash, por lo avanzado del proyecto.',
+    'De ahí salió un diseño: descargar el historial y mantenerlo sincronizado. La primera pieza, en bash, ya bajaba ese historial. José Luis Cerón aportó criterio de arquitectura y recomendó seguir en bash, dado el avance del proyecto.',
   'about.history.p9':
-    'Así seguí y seguí y avancé mucho en el proyecto, pero hubo un bloqueante y es que procesar el XML del planet es desafiante, y varias herramientas se colgaron. Años después, mi amigo José Luis me mostró Cursor IDE, y me mostró cómo desarrollar cosas, donde comencé practicando con GeoGame, un proyecto que una vez este visor esté estable, retomaré.',
+    'El avance siguió, pero procesar el XML del planet era un cuello de botella: varias herramientas no daban abasto. Años después, el mismo José Luis enseñó Cursor y bases de desarrollo; con eso se empezó a practicar en paralelo (p. ej. el proyecto GeoGame, que se retomará cuando el visor esté en una base sólida).',
   'about.history.p10':
-    'Pero fue gracias a la AI, y muchos prompts, que le propuse no usar herramientas de XML, sino a punta de AWK, un comando robusto con muchos años de experiencia, y fue así, como pude procesar todas las notas sin problema y seguir adelante con el proyecto a finales de 2025.',
+    'Con apoyo de modelos de IA y mucho iterar en prompts, se optó por prescindir de parsers XML pesados y apoyarse en AWK, muy apto para texto tabular a gran escala. Eso permitió procesar el conjunto de notas y retomar el rumbo del proyecto a finales de 2025.',
   'about.history.p11':
-    'Gracias a la AI, ya se ha vuelto más robusto el código, corregido cientos de errores, incluido pruebas unitarias, de integración, github actions, dividido el código en múltiples repositorios, mejorado el SQL, dividido la parte de ingestion de la parte de analytics, como también factorizar la parte común en commons, después crear un repo para la parte de visualización que hasta el momento no se había pensado, también se extrajo la parte de WMS, y salieron nuevos proyectos como Data, para mantener los datos en otro lugar, y que puedan inclusive ser usados por una AI para contexto, también el proyecto de API para ofrecer más funcionalidad de la que OSM API ofrece incluyendo ML, y finalmente monitoring para entender cómo todas estas piezas funcionan.',
+    'La IA ayudó a endurecer el código, corregir cientos de fallos y añadir pruebas unitarias y de integración, acciones de GitHub, mejor SQL y una división clara: ingesta, analítica, código común (commons) y, más tarde, este repositorio de visualización. También se desprendieron el WMS, un repositorio de datos (pensado hasta para dar contexto a herramientas de IA), una API con funciones que la API de OSM no cubre (incluida ayuda vía ML) y un proyecto de monitoreo para ver cómo encajan las piezas.',
   'about.history.p12':
-    'La AI en 2025 aceleró el proceso y ha sido un aprendizaje, ya que la AI a veces alucina, y por eso se le debe dar buen contexto para enfocarla. Por eso, todos estos repos están llenos de documentación, para que cualquier mejora futura esté documentada, y cualquier AI pueda mejorar el código.',
+    'En 2025 la IA aceleró el trabajo y obligó a aprender sus límites: sin contexto claro, alucina. Por eso los repositorios priorizan documentación: que cualquier mejora futura, humana o asistida, tenga de qué partir.',
   'about.built.title': 'Lo Que Hemos Construido',
   'about.built.p1':
     'Este proyecto es parte de un ecosistema integral que consta de 8 repositorios y 2 bases de datos trabajando juntos para procesar, analizar y visualizar las Notas de OSM. El ecosistema incluye canalizaciones de ingesta de datos, sistemas de análisis, APIs REST, servicios de mapas web, herramientas de monitoreo e interfaces de visualización. Todos los componentes son de código abierto y están disponibles para que la comunidad los use, modifique y extienda.',
   'about.built.p2':
-    'Para obtener información detallada sobre cada componente, consulte la sección <a href="#ecosystem-architecture">Arquitectura del Ecosistema</a> a continuación.',
+    'Los detalles de cada pieza están en la sección <a href="#ecosystem-architecture">Arquitectura del ecosistema</a> más abajo.',
   'about.architecture.title': 'Arquitectura del Ecosistema',
   'about.architecture.p':
     'Este visor es parte de un ecosistema integral de 8 repositorios y 2 bases de datos trabajando juntos para procesar, analizar y visualizar las Notas de OSM:',
@@ -355,6 +355,42 @@ export default {
     'Los datos fluyen a través del ecosistema de la siguiente manera:',
   'about.architecture.dataFlow.p2':
     'El backend de análisis extrae los datos de las notas, transforma y agrega estadísticas, y genera archivos JSON precalculados cada 15 minutos.',
+  'about.architecture.repo.ingestion':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-Ingestion" target="_blank" rel="noopener noreferrer">OSM-Notes-Ingestion</a>:</strong> Descarga y mantiene los datos de notas de OSM a partir de volcados del Planet y de la API. Gestiona actualizaciones incrementales y la sincronización.',
+  'about.architecture.repo.common':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-Common" target="_blank" rel="noopener noreferrer">OSM-Notes-Common</a>:</strong> Bibliotecas y utilidades compartidas: validación, manejo de errores y scripts Bash comunes para todos los proyectos.',
+  'about.architecture.repo.analytics':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-Analytics" target="_blank" rel="noopener noreferrer">OSM-Notes-Analytics</a>:</strong> Almacén de datos y ETL: procesa lo ingerido, genera estadísticas, datamarts y exportaciones JSON/CSV, con sugerencias basadas en ML para acciones sobre notas (cerrar, comentar, mapear).',
+  'about.architecture.repo.viewer':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-Viewer" target="_blank" rel="noopener noreferrer">OSM-Notes-Viewer</a>:</strong> Esta aplicación web: presenta los datos analíticos con perfiles de usuario, estadísticas por país y gráficos interactivos.',
+  'about.architecture.repo.data':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-Data" target="_blank" rel="noopener noreferrer">OSM-Notes-Data</a>:</strong> Publica JSON pregenerado vía GitHub Pages o CDN: perfiles, estadísticas por país e índices.',
+  'about.architecture.repo.api':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-API" target="_blank" rel="noopener noreferrer">OSM-Notes-API</a>:</strong> API REST para acceso dinámico: detalle de una nota, estadísticas de hashtags, recomendaciones de ML y búsqueda.',
+  'about.architecture.repo.monitoring':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-Monitoring" target="_blank" rel="noopener noreferrer">OSM-Notes-Monitoring</a>:</strong> Monitoreo: paneles de Grafana, métricas de Prometheus y comprobación de salud de todo el ecosistema.',
+  'about.architecture.repo.wms':
+    '<strong><a href="https://github.com/OSM-Notes/OSM-Notes-WMS" target="_blank" rel="noopener noreferrer">OSM-Notes-WMS</a>:</strong> Configuración de GeoServer y WMS (Web Map Service): espacios de trabajo, capas y estilos para servicios de mapa.',
+  'about.architecture.db.ingestion':
+    '<strong>PostgreSQL (base de ingesta):</strong> Notas en bruto del Planet y la API, con tablas como notas, comentarios, usuarios y países. La usa OSM-Notes-Ingestion para almacenamiento y actualizaciones incrementales.',
+  'about.architecture.db.analytics':
+    '<strong>PostgreSQL (almacén analítico):</strong> Esquema en estrella con hechos y dimensiones para ETL y estadísticas. Alimenta datamarts de usuario, país y análisis temporal. Lo usa OSM-Notes-Analytics.',
+  'about.architecture.service.geoserver':
+    '<strong>GeoServer (WMS):</strong> Capas de mapa para la interfaz, según el repositorio OSM-Notes-WMS. Incluye notas abiertas, notas cerradas y límites de países.',
+  'about.architecture.service.ml':
+    '<strong>Recomendaciones ML:</strong> Integradas en OSM-Notes-Analytics; proponen acciones sobre notas (cerrar, comentar, mapear) y se exponen vía la API.',
+  'about.architecture.flow.1': '<strong>OSM Planet / API</strong> → Datos de notas en bruto',
+  'about.architecture.flow.2':
+    '<strong>OSM-Notes-Ingestion</strong> → Descarga y almacenamiento en PostgreSQL (base de ingesta)',
+  'about.architecture.flow.3': '<strong>OSM-Notes-Analytics</strong> → ETL hacia el almacén analítico',
+  'about.architecture.flow.4':
+    '<strong>OSM-Notes-Analytics</strong> → Exportación de JSON al repositorio OSM-Notes-Data',
+  'about.architecture.flow.5': '<strong>OSM-Notes-Data</strong> → Archivos JSON estáticos vía CDN',
+  'about.architecture.flow.6': '<strong>OSM-Notes-Viewer</strong> → Carga y presentación de los datos',
+  'about.architecture.flow.7': '<strong>OSM-Notes-API</strong> → Acceso REST dinámico',
+  'about.architecture.flow.8': '<strong>OSM-Notes-WMS (GeoServer)</strong> → Capas WMS en el mapa',
+  'about.architecture.flow.9': '<strong>OSM-Notes-Analytics (ML)</strong> → Recomendaciones a través de la API',
+  'about.architecture.flow.10': '<strong>OSM-Notes-Monitoring</strong> → Salud y rendimiento del sistema',
   'about.dataOrigins.title': 'Orígenes de los Datos',
   'about.dataOrigins.p1':
     'Todos los datos mostrados en este visor provienen de <strong>OpenStreetMap (OSM)</strong>, incluyendo tanto datos cartográficos como datos de notas. La información cartográfica se utiliza para visualización geográfica y mapeo, mientras que los datos de notas proporcionan las estadísticas y análisis mostrados en toda la aplicación.',
@@ -384,7 +420,7 @@ export default {
   'about.openSource.p2':
     'Todo el código fuente está disponible libremente para que cualquiera pueda usarlo, estudiarlo, modificarlo y distribuirlo. Este enfoque abierto permite que la comunidad contribuya con mejoras, reporte problemas y adapte las herramientas a sus necesidades específicas.',
   'about.openSource.p3':
-    'Para obtener información detallada sobre cada repositorio, incluyendo sus propósitos específicos y cómo trabajan juntos, consulte la sección <a href="#ecosystem-architecture">Arquitectura del Ecosistema</a> anterior.',
+    'El propósito de cada repositorio y cómo se combinan se describe en <a href="#ecosystem-architecture">Arquitectura del ecosistema</a> arriba.',
   'about.contact.title': 'Contacto',
   'about.contact.p': 'Para preguntas, sugerencias u oportunidades de colaboración:',
   'about.contact.telegram.label': 'Telegram:',
@@ -394,12 +430,12 @@ export default {
     'Únete a la comunidad OSM Latam dedicada a resolver notas y mejorar la calidad del mapa',
   'about.monitoring.title': 'Monitoreo y Estado',
   'about.monitoring.p':
-    'Monitoree el estado del sistema, métricas de rendimiento y el estado del procesamiento de datos:',
+    'Aquí puedes revisar salud del sistema, rendimiento y el procesamiento de datos:',
   'about.monitoring.button': 'Ver Panel de Monitoreo (Grafana)',
   'about.monitoring.description':
     'El panel proporciona métricas en tiempo real sobre el procesamiento de datos, el rendimiento de la API, el estado de la base de datos y la salud del sistema. Impulsado por Grafana y Prometheus.',
   'about.contributing.title': 'Contribuir',
-  'about.contributing.p': '¡Las contribuciones son bienvenidas! Siéntete libre de:',
+  'about.contributing.p': 'Las contribuciones son bienvenidas. Puedes:',
   'about.contributing.item1':
     'Reportar errores o solicitar características a través de GitHub Issues',
   'about.contributing.item2': 'Enviar pull requests con mejoras',
