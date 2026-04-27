@@ -438,7 +438,10 @@ project:
 
 - **API Configuration**: `config/api-config.js` - Configure data source URL
   ```javascript
-  export const API_BASE_URL = 'https://your-cdn.com/api';
+  export const API_CONFIG = {
+    BASE_URL: 'https://your-cdn.com/api', // or '/data' for static JSON
+    // …
+  };
   ```
 
 ### JSON Schema Validation
@@ -529,26 +532,44 @@ Do not use `vite preview` in production. Build once and serve the **`dist/`** ou
 
 1. **Configure the API** before building (values are baked into the client bundle):
 
-   - Edit `config/api-config.js` and set `API_BASE_URL` to your backend.
+   - Edit `config/api-config.js` and set `API_CONFIG.BASE_URL` to your data/API base (then rebuild).
    - Re-run `npm run build` after any change to that file.
 
-2. **Build and install files** on the server (example paths: adjust to your layout):
+2. **Install Nginx first** (so the web user and typical paths exist, and the service is available before you publish files). On Debian/Ubuntu:
 
    ```bash
-   cd /var/www/osm-notes-viewer   # or your clone path
+   sudo apt update && sudo apt install -y nginx
+   ```
+
+   You do not run `nginx` interactively in the shell like a dev server. After install, the binary is used by the **`nginx.service` systemd unit**; you only **test config** and **reload** with `sudo nginx -t` and `systemctl` (see below).
+
+3. **Prepare the document root** (the folder Nginx will use as `root` — example `/var/www/html/osm-notes/`; must match step 5). Create it and ownership if it does not exist:
+
+   ```bash
+   sudo mkdir -p /var/www/html/osm-notes
+   sudo chown -R "$USER":www-data /var/www/html/osm-notes   # adjust user/group to your policy
+   ```
+
+4. **Build and copy the site** from your clone to that directory (example paths: adjust to your layout):
+
+   ```bash
+   cd /var/www/osm-notes-viewer   # or your clone path (e.g. ~/OSM-Notes-Viewer)
    git pull
    npm ci
    npm run build
-   # Optional: copy dist/ to a dedicated web root owned by the web user
    sudo rsync -a --delete dist/ /var/www/html/osm-notes/
    ```
 
-3. **Nginx** — minimal `server` block (Debian-style site under `/etc/nginx/sites-available/`):
+   - **`rsync`**: copies the built `dist/` output to the Nginx `root` above. The **same path** is used in the `server` block in the next step.
+
+5. **Nginx site config** — minimal `server` block (Debian-style: add a file under `/etc/nginx/sites-available/`, then symlink to `sites-enabled/`, or add the block to the main config). The block tells Nginx: “listen on this port, serve files from this folder when someone requests `/`.”
+
+   Use **`listen 80;`** (HTTP) or **`listen 443 ssl;`** (HTTPS) when the site is exposed directly on the standard ports. If the viewer is published on a **non-standard port** (e.g. **9000**), use for example `listen 9000;` — users then open `https://example.com:9000/` unless a reverse proxy in front maps `80`/`443` to that port.
 
    ```nginx
    server {
-       listen 80;
-       server_name your.host.example;   # or _ for any hostname
+       listen 80;              # e.g. listen 9000;  or  listen 443 ssl;
+       server_name your.host.example;   # e.g. notes.osm.lat
 
        root /var/www/html/osm-notes;
        index index.html;
@@ -566,22 +587,25 @@ Do not use `vite preview` in production. Build once and serve the **`dist/`** ou
    sudo nginx -t && sudo systemctl reload nginx
    ```
 
-4. **Service** — enable Nginx to start on boot (package installs a `nginx.service` unit):
+6. **Service** — enable Nginx to start on boot (package installs a `nginx.service` unit):
 
    ```bash
    sudo systemctl enable --now nginx
    ```
 
-5. **Firewall** — if applicable, allow HTTP/HTTPS to that host (e.g. `80`/`443`).
+7. **Firewall** — if applicable, allow the same TCP port you use in `listen` (e.g. `80`/`443`, or **`9000`** if the site is only on that port).
 
 For updates, repeat `git pull` → `npm ci` → `npm run build` (and `rsync` or equivalent), then `systemctl reload nginx` if the site path changed. See also [docs/Build.md](docs/Build.md) for the build output layout.
 
 ## Configuration
 
-Update the API endpoint in `config/api-config.js`:
+Update the base URL in `config/api-config.js` (`API_CONFIG.BASE_URL`):
 
 ```javascript
-export const API_BASE_URL = 'https://your-cdn.com/api';
+export const API_CONFIG = {
+  BASE_URL: 'https://your-cdn.com/api',
+  // …
+};
 ```
 
 ## Project Structure
