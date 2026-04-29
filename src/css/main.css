@@ -595,6 +595,17 @@ main .container section + section {
   font-size: 1.25rem;
 }
 
+.global-stats-unavailable {
+  margin: 0.75rem 0 0;
+  padding: 0.65rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary, #666);
+  background: color-mix(in srgb, var(--border-color) 40%, transparent);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

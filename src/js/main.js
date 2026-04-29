@@ -234,6 +234,10 @@ function setupEventListeners() {
         }
         searchInput.placeholder = placeholder;
       }
+      const globalStatsNotice = document.getElementById('globalStatsExtendedNotice');
+      if (globalStatsNotice && !globalStatsNotice.hidden) {
+        globalStatsNotice.textContent = i18n.t('home.stats.globalMetricsUnavailable');
+      }
     });
     window.hasLanguageListener = true;
   }
@@ -596,14 +600,31 @@ async function loadGlobalStats() {
     notesOpenThisYearEl.textContent = formatNumber(totalOpenYear);
     notesClosedThisYearEl.textContent = formatNumber(totalClosedYear);
 
-    // Try to load global stats for additional metrics
-    try {
-      const globalStats = await apiClient.getGlobalStats();
-
-      // Resolution metrics
+    const noticeEl = document.getElementById('globalStatsExtendedNotice');
+    const hideGlobalStatCards = () => {
       const avgDaysEl = document.getElementById('avgDaysToResolution');
       const resolutionRateEl = document.getElementById('resolutionRate');
       const totalCommentsEl = document.getElementById('totalComments');
+      if (avgDaysEl) avgDaysEl.parentElement.style.display = 'none';
+      if (resolutionRateEl) resolutionRateEl.parentElement.style.display = 'none';
+      if (totalCommentsEl) totalCommentsEl.parentElement.style.display = 'none';
+    };
+
+    try {
+      const globalStats = await apiClient.getGlobalStats();
+
+      if (noticeEl) {
+        noticeEl.hidden = true;
+        noticeEl.textContent = '';
+      }
+
+      const avgDaysEl = document.getElementById('avgDaysToResolution');
+      const resolutionRateEl = document.getElementById('resolutionRate');
+      const totalCommentsEl = document.getElementById('totalComments');
+
+      if (avgDaysEl) avgDaysEl.parentElement.style.display = '';
+      if (resolutionRateEl) resolutionRateEl.parentElement.style.display = '';
+      if (totalCommentsEl) totalCommentsEl.parentElement.style.display = '';
 
       if (avgDaysEl && globalStats.avg_days_to_resolution !== undefined) {
         avgDaysEl.textContent = globalStats.avg_days_to_resolution.toFixed(1) + ' days';
@@ -617,15 +638,12 @@ async function loadGlobalStats() {
         totalCommentsEl.textContent = formatNumber(globalStats.history_whole_commented);
       }
     } catch (error) {
-      console.warn('Could not load global stats, using calculated values:', error);
-      // Hide elements if global stats not available
-      const avgDaysEl = document.getElementById('avgDaysToResolution');
-      const resolutionRateEl = document.getElementById('resolutionRate');
-      const totalCommentsEl = document.getElementById('totalComments');
-
-      if (avgDaysEl) avgDaysEl.parentElement.style.display = 'none';
-      if (resolutionRateEl) resolutionRateEl.parentElement.style.display = 'none';
-      if (totalCommentsEl) totalCommentsEl.parentElement.style.display = 'none';
+      console.warn('Could not load global stats:', error);
+      hideGlobalStatCards();
+      if (noticeEl) {
+        noticeEl.textContent = i18n.t('home.stats.globalMetricsUnavailable');
+        noticeEl.hidden = false;
+      }
     }
   } catch (error) {
     console.error('Error loading global stats:', error);
