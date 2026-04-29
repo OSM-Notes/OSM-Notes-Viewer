@@ -4,19 +4,24 @@
 import { getUserPath } from '../js/utils/userPaths.js';
 
 // Determine base URL based on environment variables
-// Default: Use GitHub Pages (via proxy in dev to avoid CORS, direct in production)
-// Set VITE_USE_LOCAL_DATA=true to use local /data directory instead
+// Set VITE_USE_LOCAL_DATA=true to use local /data directory (same origin)
+// Set VITE_DATA_BASE_URL to override the remote data host (no trailing slash)
 const useLocalData = import.meta.env.VITE_USE_LOCAL_DATA === 'true';
+const envDataBase = import.meta.env.VITE_DATA_BASE_URL;
 const isDev = import.meta.env.DEV;
+
+/** Canonical OSM-Notes-Data static JSON root (GitHub Pages). */
+const DEFAULT_REMOTE_DATA_BASE = 'https://osm-notes.github.io/OSM-Notes-Data/data';
 
 let baseUrl;
 if (useLocalData) {
   baseUrl = '/data';
+} else if (envDataBase && String(envDataBase).trim() !== '') {
+  baseUrl = String(envDataBase).replace(/\/$/, '');
 } else {
-  // Default: Use notes.osm.lat which serves data from OSM-Notes-Data repository
-  // This works reliably and has CORS configured properly
-  // GitHub Pages (osm-notes.github.io) redirects to custom domain which doesn't have the data
-  baseUrl = 'https://notes.osm.lat/data';
+  // notes.osm.lat/data often 404s (custom domain not mirroring GitHub Pages data).
+  // See: curl -I https://notes.osm.lat/data/metadata.json vs osm-notes.github.io/.../data/metadata.json
+  baseUrl = DEFAULT_REMOTE_DATA_BASE;
 }
 
 // Debug log (only in development)
@@ -25,10 +30,6 @@ if (isDev) {
 }
 
 export const API_CONFIG = {
-  // Base URL for JSON files
-  // Default: Uses notes.osm.lat which serves data from OSM-Notes-Data repository
-  // This domain has CORS properly configured and works reliably
-  // Set VITE_USE_LOCAL_DATA=true to use local /data directory instead
   BASE_URL: baseUrl,
 
   // Cache settings
@@ -39,6 +40,7 @@ export const API_CONFIG = {
     metadata: '/metadata.json',
     userIndex: '/indexes/users.json',
     countryIndex: '/indexes/countries.json',
+    globalStats: '/global_stats.json',
     user: (userId) => getUserPath(userId),
     country: (countryId) => `/countries/${countryId}.json`,
     // Note: Notes endpoint is handled via REST API (OSM-Notes-API), not static JSON
