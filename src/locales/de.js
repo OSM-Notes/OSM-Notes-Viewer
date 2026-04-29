@@ -47,6 +47,8 @@ export default {
   'home.stats.avgDaysToResolution': 'Ø Tage bis zur Lösung',
   'home.stats.resolutionRate': 'Lösungsrate',
   'home.stats.totalComments': 'Kommentare gesamt',
+  'home.stats.globalMetricsUnavailable':
+    'Erweiterte globale Kennzahlen (durchschnittliche Tage bis zur Lösung, Lösungsrate, Gesamtkommentare) konnten nicht geladen werden. Die Daten fehlen möglicherweise oder sind vorübergehend nicht verfügbar.',
   'home.stats.activeUsers': 'Aktive Benutzer',
   'home.stats.countries': 'Regionen',
   'home.stats.lastUpdate': 'Letzte Aktualisierung',

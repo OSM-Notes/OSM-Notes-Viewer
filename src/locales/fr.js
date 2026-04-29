@@ -48,6 +48,8 @@ export default {
   'home.stats.avgDaysToResolution': 'Jours moyens jusqu’à résolution',
   'home.stats.resolutionRate': 'Taux de résolution',
   'home.stats.totalComments': 'Total des commentaires',
+  'home.stats.globalMetricsUnavailable':
+    'Impossible de charger les indicateurs globaux étendus (jours moyens jusqu’à résolution, taux de résolution et total des commentaires). Les données peuvent être absentes ou temporairement indisponibles.',
   'home.stats.activeUsers': 'Utilisateurs Actifs',
   'home.stats.countries': 'Régions',
   'home.stats.lastUpdate': 'Dernière Mise à Jour',

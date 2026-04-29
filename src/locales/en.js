@@ -47,6 +47,8 @@ export default {
   'home.stats.avgDaysToResolution': 'Avg Days to Resolution',
   'home.stats.resolutionRate': 'Resolution Rate',
   'home.stats.totalComments': 'Total Comments',
+  'home.stats.globalMetricsUnavailable':
+    'Could not load extended global metrics (average days to resolution, resolution rate, and total comments). The data may be missing or temporarily unavailable.',
   'home.stats.activeUsers': 'Active Users',
   'home.stats.countries': 'Regions',
   'home.stats.lastUpdate': 'Last Updated',
