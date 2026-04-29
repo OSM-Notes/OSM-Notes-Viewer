@@ -5,7 +5,12 @@
  */
 
 import { apiClient } from '../api/apiClient.js';
-import { API_CONFIG } from '../../config/api-config.js';
+import { API_CONFIG, getApiUrl } from '../../config/api-config.js';
+
+/** Match absolute http(s) URLs (OSM API, notes-api, etc.). */
+function isAbsoluteHttpUrl(url) {
+  return /^https?:\/\//i.test(url);
+}
 
 /**
  * Prefetch queue to avoid overwhelming the browser
@@ -64,15 +69,6 @@ const prefetchQueue = new PrefetchQueue();
 export async function prefetchUrl(url, options = {}) {
   const { type = 'fetch', priority = 0 } = options;
 
-  // Skip if already cached (check both apiClient cache and localStorage)
-  try {
-    if (apiClient.isCacheValid && apiClient.isCacheValid(url)) {
-      return;
-    }
-  } catch (e) {
-    // Continue if cache check fails
-  }
-
   // Use link prefetch for HTML pages (faster, browser-managed)
   if (type === 'link' && 'requestIdleCallback' in window) {
     requestIdleCallback(() => {
@@ -85,20 +81,32 @@ export async function prefetchUrl(url, options = {}) {
     return;
   }
 
+  // Static OSM-Notes-Data paths must use API base URL (not page origin).
+  const fetchUrl = isAbsoluteHttpUrl(url) ? url : getApiUrl(url);
+  const cacheKey = isAbsoluteHttpUrl(url) ? null : url;
+
+  try {
+    if (cacheKey && apiClient.isCacheValid && apiClient.isCacheValid(cacheKey)) {
+      return;
+    }
+  } catch (e) {
+    // Continue if cache check fails
+  }
+
   // Use fetch for API/data (can be cached by apiClient)
   return prefetchQueue.add(async () => {
     try {
       // Use low priority fetch to avoid blocking critical requests
       if ('scheduler' in window && 'postTask' in window.scheduler) {
-        await window.scheduler.postTask(() => fetch(url, { priority: 'low' }), {
+        await window.scheduler.postTask(() => fetch(fetchUrl, { priority: 'low' }), {
           priority: 'background',
         });
       } else {
-        await fetch(url);
+        await fetch(fetchUrl);
       }
     } catch (error) {
       // Silently fail - prefetch is best effort
-      console.debug('Prefetch failed:', url, error);
+      console.debug('Prefetch failed:', fetchUrl, error);
     }
   }, priority);
 }
