@@ -283,6 +283,7 @@ export default {
   'common.of': 'de',
   'common.day': 'dia',
   'common.days': 'dias',
+  'common.notAvailable': 'N/D',
   'common.notes': 'notas',
   'common.users': 'usuários',
   'common.countries': 'países',

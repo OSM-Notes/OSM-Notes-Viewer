@@ -468,6 +468,7 @@ export default {
   'common.next': 'Siguiente',
   'common.page': 'Página',
   'common.of': 'de',
+  'common.notAvailable': 'N/D',
   'common.notes': 'notas',
   'common.note': 'Nota',
   'common.comment': 'comentario',

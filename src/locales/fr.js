@@ -315,6 +315,7 @@ export default {
   'common.next': 'Suivant',
   'common.page': 'Page',
   'common.of': 'de',
+  'common.notAvailable': 'N/A',
   'common.notes': 'notes',
   'common.note': 'Note',
   'common.comment': 'commentaire',

@@ -455,6 +455,7 @@ export default {
   'common.next': 'Next',
   'common.page': 'Page',
   'common.of': 'of',
+  'common.notAvailable': 'N/A',
   'common.notes': 'notes',
   'common.note': 'Note',
   'common.comment': 'comment',

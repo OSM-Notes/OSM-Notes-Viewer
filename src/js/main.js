@@ -15,6 +15,26 @@ import { getUserAvatarSync, loadOSMAvatarInBackground } from './utils/userAvatar
 import { createSimpleNoteCard } from './utils/noteMap.js';
 import { initPrefetch } from './utils/prefetch.js';
 
+/** @returns {number|null} */
+function globalNumericField(obj, key) {
+  if (!obj || obj[key] == null) return null;
+  const n = Number(obj[key]);
+  return Number.isFinite(n) ? n : null;
+}
+
+/** @returns {Date|null} */
+function parseGlobalStartDate(isoDate) {
+  if (!isoDate || typeof isoDate !== 'string') return null;
+  const d = new Date(isoDate);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function formatOptionalGlobalNumber(value) {
+  return value != null && Number.isFinite(value)
+    ? formatNumber(value)
+    : i18n.t('common.notAvailable');
+}
+
 // Helper function to format username with special styling
 function formatUsernameWithStyle(username) {
   if (username === 'NeisBot') {
@@ -528,77 +548,51 @@ async function loadGlobalStats() {
   });
 
   try {
-    console.log('📥 Fetching metadata...');
-    const metadata = await apiClient.getMetadata();
+    console.log('📥 Fetching metadata and global_stats.json...');
+    const [metadata, globalStats] = await Promise.all([
+      apiClient.getMetadata(),
+      apiClient.getGlobalStats().catch((err) => {
+        console.warn('Could not load global stats:', err);
+        return null;
+      }),
+    ]);
     console.log('✅ Metadata received:', metadata);
 
     totalUsersEl.textContent = formatNumber(metadata.total_users);
     totalCountriesEl.textContent = formatNumber(metadata.total_countries);
     lastUpdateEl.innerHTML = formatDateWithBreak(metadata.export_date);
 
-    // Calculate totals by summing all user and country notes
-    console.log('📥 Fetching indexes to calculate stats...');
-    const [users, countries] = await Promise.all([
-      apiClient.getUserIndex(),
-      apiClient.getCountryIndex(),
-    ]);
+    const totalNotesOpen = globalNumericField(globalStats, 'history_whole_open');
+    const totalNotesClosed = globalNumericField(globalStats, 'history_whole_closed');
 
-    // Calculate from users
-    const totalNotesOpen = users.reduce((sum, user) => sum + (user.history_whole_open || 0), 0);
-    const totalNotesClosed = users.reduce((sum, user) => sum + (user.history_whole_closed || 0), 0);
-    const totalNotes = totalNotesOpen + totalNotesClosed;
+    const curOpen = globalNumericField(globalStats, 'currently_open_count');
+    const curClosed = globalNumericField(globalStats, 'currently_closed_count');
+    let totalNotes = null;
+    if (curOpen != null && curClosed != null) {
+      totalNotes = curOpen + curClosed;
+    } else {
+      totalNotes = globalNumericField(globalStats, 'history_whole_open');
+    }
 
-    // Find first notes from countries (they should have earliest dates)
-    let firstOpenDate = null;
-    let firstClosedDate = null;
+    const firstOpenDate = parseGlobalStartDate(globalStats?.date_starting_creating_notes);
+    const firstClosedDate = parseGlobalStartDate(globalStats?.date_starting_solving_notes);
 
-    countries.forEach((country) => {
-      if (country.dates_most_open && country.dates_most_open.length > 0) {
-        const dates = country.dates_most_open.map((d) => new Date(d));
-        const earliestDate = new Date(Math.min(...dates));
-        if (!firstOpenDate || earliestDate < firstOpenDate) {
-          firstOpenDate = earliestDate;
-        }
-      }
-      if (country.dates_most_closed && country.dates_most_closed.length > 0) {
-        const dates = country.dates_most_closed.map((d) => new Date(d));
-        const earliestDate = new Date(Math.min(...dates));
-        if (!firstClosedDate || earliestDate < firstClosedDate) {
-          firstClosedDate = earliestDate;
-        }
-      }
-    });
+    totalNotesOpenEl.textContent = formatOptionalGlobalNumber(totalNotesOpen);
+    totalNotesClosedEl.textContent = formatOptionalGlobalNumber(totalNotesClosed);
+    totalNotesEl.textContent = formatOptionalGlobalNumber(totalNotes);
 
-    // Display values
-    totalNotesOpenEl.textContent = formatNumber(totalNotesOpen);
-    totalNotesClosedEl.textContent = formatNumber(totalNotesClosed);
-    totalNotesEl.textContent = formatNumber(totalNotes);
+    firstNoteOpenEl.textContent = firstOpenDate
+      ? firstOpenDate.toLocaleDateString()
+      : i18n.t('common.notAvailable');
+    firstNoteClosedEl.textContent = firstClosedDate
+      ? firstClosedDate.toLocaleDateString()
+      : i18n.t('common.notAvailable');
 
-    firstNoteOpenEl.textContent = firstOpenDate ? firstOpenDate.toLocaleDateString() : 'N/A';
-    firstNoteClosedEl.textContent = firstClosedDate ? firstClosedDate.toLocaleDateString() : 'N/A';
+    const totalOpenYear = globalNumericField(globalStats, 'history_year_open');
+    const totalClosedYear = globalNumericField(globalStats, 'history_year_closed');
 
-    // Calculate stats for this year from last_year_activity
-    let notesOpenThisYear = 0;
-    let notesClosedThisYear = 0;
-
-    countries.forEach((country) => {
-      if (country.last_year_activity) {
-        // last_year_activity is a binary string, count the '1's for this year's activity
-        // The string represents activity over the last year, counting 1s gives us activity count
-        const activityCount = (country.last_year_activity.match(/1/g) || []).length;
-        // Rough estimation: we don't have separate open/closed counts in the binary string
-        // So we'll use the total notes as a proxy
-        notesOpenThisYear += country.history_whole_open || 0;
-        notesClosedThisYear += country.history_whole_closed || 0;
-      }
-    });
-
-    // Use the index data which has history_year_open and history_year_closed
-    const totalOpenYear = users.reduce((sum, user) => sum + (user.history_year_open || 0), 0);
-    const totalClosedYear = users.reduce((sum, user) => sum + (user.history_year_closed || 0), 0);
-
-    notesOpenThisYearEl.textContent = formatNumber(totalOpenYear);
-    notesClosedThisYearEl.textContent = formatNumber(totalClosedYear);
+    notesOpenThisYearEl.textContent = formatOptionalGlobalNumber(totalOpenYear);
+    notesClosedThisYearEl.textContent = formatOptionalGlobalNumber(totalClosedYear);
 
     const noticeEl = document.getElementById('globalStatsExtendedNotice');
     const hideGlobalStatCards = () => {
@@ -610,9 +604,7 @@ async function loadGlobalStats() {
       if (totalCommentsEl) totalCommentsEl.parentElement.style.display = 'none';
     };
 
-    try {
-      const globalStats = await apiClient.getGlobalStats();
-
+    if (globalStats) {
       if (noticeEl) {
         noticeEl.hidden = true;
         noticeEl.textContent = '';
@@ -637,8 +629,7 @@ async function loadGlobalStats() {
       if (totalCommentsEl && globalStats.history_whole_commented !== undefined) {
         totalCommentsEl.textContent = formatNumber(globalStats.history_whole_commented);
       }
-    } catch (error) {
-      console.warn('Could not load global stats:', error);
+    } else {
       hideGlobalStatCards();
       if (noticeEl) {
         noticeEl.textContent = i18n.t('home.stats.globalMetricsUnavailable');
