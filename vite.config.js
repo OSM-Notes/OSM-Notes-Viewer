@@ -52,7 +52,8 @@ export default defineConfig({
   // Server configuration for development
   server: {
     port: 8080,
-    open: true,
+    // false: avoids spawn xdg-open ENOENT on headless / minimal Linux (no xdg-utils)
+    open: false,
     // Disable caching in development to ensure fresh content
     headers: {
       'Cache-Control': 'no-store',
@@ -100,7 +101,6 @@ export default defineConfig({
     },
   },
 
-  // Do not auto-open a browser (avoids spawn xdg-open ENOENT on headless / minimal Linux)
   preview: {
     open: false,
   },
